@@ -1,0 +1,69 @@
+.delivery
+  margin: 5% auto
+  padding: 0 16px
+
+  &__container
+    max-width: 1200px
+    width: 100%
+    border-radius: 20px
+    background-color: white
+    display: grid
+    grid-template-columns: 0.9fr 1.1fr
+    overflow: hidden
+    @media (max-width: $width-mobile)
+      grid-template-columns: 1fr
+
+  &__title
+    font-size: 32px
+
+  &__address
+    padding: 24px
+    display: flex
+    flex-direction: column
+    gap: 32px
+
+
+  .input
+    padding: 16px 12px
+    border: 1px solid rgb(211, 213, 222)
+    outline: none
+    width: 100%
+    border-radius: 12px
+
+  &__fieldset
+    margin-top: 16px
+    display: grid
+    grid-template-columns: repeat(2, 1fr)
+    gap: 16px
+
+  .input[name="comment"]
+    grid-column: 1 / -1
+
+
+  &__submit
+    margin-top: 64px
+    width: 100%
+    padding: 12px
+    font-size: 20px
+    font-weight: 500
+    border-radius: 20px
+    background-color: tomato
+    color: #fff
+    transition: 0.3s
+    @media (max-width: $width-mobile)
+      margin-top: 32px
+    &:disabled
+      background-color: #BFBFBF
+      color: grey
+    &:hover
+      opacity: 0.8
+
+  &__map
+    width: 100%
+    height: 100%
+    overflow: hidden
+    @media (max-width: $width-mobile)
+      aspect-ratio: 1 / 1
+    #map-delivery
+      width: 100%
+      height: 100%

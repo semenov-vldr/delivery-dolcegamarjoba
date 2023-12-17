@@ -1,0 +1,6 @@
+@mixin fontSize($min, $max)
+  font-size: clamp(#{$min}px, calc(#{$min}px + (#{$max} - #{$min}) * ((100vw - 360px) / (1440 - 360))), #{$max}px)
+
+
+@mixin changeSize($property, $min, $max)
+  #{$property}: clamp(#{$min}px, calc(#{$min}px + (#{$max} - #{$min}) * ((100vw - 768px) / (1920 - 768))), #{$max}px)

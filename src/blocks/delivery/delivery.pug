@@ -1,0 +1,20 @@
+.delivery#delivery
+    .delivery__container
+        .delivery__address
+            h2.delivery__title Адрес доставки
+
+            input.input(type="text" id="suggest" name="address" placeholder="город, улица, дом" autocomplete="off")
+
+            fieldset.delivery__fieldset
+                input.input(type="text" name="porch" placeholder="Подъезд" maxlength="10" autocomplete="off")
+                input.input(type="text" name="intercom" placeholder="Код домофона" maxlength="10" autocomplete="off")
+                input.input(type="text" name="floor" placeholder="Этаж" maxlength="10" autocomplete="off")
+                input.input(type="text" name="apartment" placeholder="Квартира" maxlength="10" autocomplete="off")
+                input.input(type="text" name="comment" placeholder="Комментарий к адресу" maxlength="256" autocomplete="off")
+
+            button.delivery__submit(type="submit") Добавить
+        .delivery__map
+            #map-delivery
+
+
+

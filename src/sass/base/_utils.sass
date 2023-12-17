@@ -1,0 +1,110 @@
+.hidden
+  display: none !important
+
+.visually-hidden
+  position: absolute
+  width: 1px
+  height: 1px
+  margin: -1px
+  border: 0
+  padding: 0
+  white-space: nowrap
+  clip-path: inset(100%)
+  clip: rect(0 0 0 0)
+  overflow: hidden
+
+
+.title-section
+  @include fontSize(24, 32)
+  font-weight: 600
+  margin-bottom: 32px
+  @media (max-width: $width-mobile)
+    margin-bottom: 24px
+
+
+.flex-center
+  display: flex
+  align-items: center
+  justify-content: center
+
+
+.button
+  font-weight: 600
+  border-radius: 30px
+  width: fit-content
+  padding: 8px 32px
+  min-height: 40px
+  border: 1px solid transparent
+  &.button--accent
+    //background-color: $accent
+    color: white
+    &:hover
+      //background-color: $accent-hover
+      transition: 0.3s
+
+
+button
+  cursor: pointer
+
+.desktop-hidden
+  @media (min-width: $width-mobile)
+    display: none
+
+.mobile-hidden
+  @media (max-width: $width-mobile)
+    display: none
+
+.tablet-hidden
+  @media (min-width: $width-tablet)
+    display: none
+
+
+
+// -------- Swiper -----------
+
+.swiper
+  width: 100%
+
+.swiper-slide
+  height: auto
+
+.swiper-pagination
+  position: relative
+  z-index: 4
+  margin-top: 16px
+  @media (min-width: $width-tablet)
+    display: none
+
+
+.swiper-pagination-bullet
+  width: 12px
+  height: 12px
+  background-color: #C6C6C6
+  transition: $transition
+  //&-active
+//background-color: $grey
+
+// стрелки навигации
+//.swiper-button-next,
+//.swiper-button-prev
+//  width: 32px
+//  height: 32px
+//  cursor: pointer
+//  z-index: 1
+//  background-repeat: no-repeat
+//  background-size: cover
+//  background-position: center
+//  top: -50px
+//  right: 0
+//  left: initial
+//  margin-top: 0
+//  &::after
+//    display: none
+//  @media (max-width: $width-mobile)
+//    display: none
+//.swiper-button-prev
+//  background-image: url('../img/icons/arrow-right.svg')
+//  transform: rotate(180deg) translateX(100%)
+//  right: 20px
+//.swiper-button-next
+//  background-image: url('../img/icons/arrow-right.svg')

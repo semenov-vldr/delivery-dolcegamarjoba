@@ -1,0 +1,44 @@
+block variables
+    - var activePage = activePage
+
+doctype html
+html(lang="ru-RU")
+    head
+        meta(charset="utf-8")
+        title #{title}
+        //[if IE]
+        meta(http-equiv='X-UA-Compatible' content="IE = edge")
+
+        meta(name="viewport" content="width=device-width,initial-scale=1 shrink-to-fit=no")
+        meta(name="keywords" content="")
+
+        //favicon
+        link(rel="shortcut icon" href="favicon.ico" type="image/x-icon")
+        link(rel="icon" href="favicon.ico" type="image/x-icon")
+
+        link(rel="stylesheet" type='text/css' href="assets/css/libs.css")
+        link(rel="stylesheet" type='text/css' href="assets/css/main.css")
+
+        //[if lt IE 9]
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js")
+        //[endif]
+
+        <!-- Yandex map script -->
+        //script(src=`https://api-maps.yandex.ru/2.1/?apikey=dad86943-dfef-45bd-9c5e-c404323cb093&lang=ru_RU` type="text/javascript")
+        script(src=`https://api-maps.yandex.ru/2.1/?apikey=dad86943-dfef-45bd-9c5e-c404323cb093&suggest_apikey=0ba3e60f-19b7-401c-ad7c-21b887d374e9&lang=ru_RU` type="text/javascript")
+
+        // jquery
+        script(src="https://yandex.st/jquery/2.2.3/jquery.js" type="text/javascript")
+
+        //axios
+        //script(src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js" type="text/javascript")
+
+
+    body
+        include ../blocks/header/header
+        main.main
+            block content
+        include ../blocks/footer/footer
+    script(src="assets/scripts/libs.min.js")
+    script(src="assets/scripts/main.js" type="module")
+    block script
