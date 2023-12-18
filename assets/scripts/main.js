@@ -29,14 +29,35 @@ function initYaMap() {
 ;
 
 // ----------------------------------------------------------------------------------------------------------------
-
+// Добавление меток для всех ЗОН
+var marks = [{
+  coordinates: [55.890130, 37.688847],
+  iconContent: 1,
+  preset: 'islands#redStretchyIcon',
+  balloonContentHeader: "ЗОНА 1",
+  balloonContentBody: "Минимальная сумма заказа 1000р.",
+  balloonContentFooter: "Стоимость доставки: заказ до 2500р. стоимость доставки - 150р заказ от 2500р доставка БЕСПЛАТНО!"
+}, {
+  coordinates: [55.872136, 37.635663],
+  iconContent: 2,
+  preset: 'islands#blueStretchyIcon',
+  balloonContentHeader: "ЗОНА 2",
+  balloonContentBody: "Минимальная сумма заказа 1500р.",
+  balloonContentFooter: "Стоимость доставки: заказ до 3000р. стоимость доставки - 300р заказ от 3000р доставка БЕСПЛАТНО!"
+}, {
+  coordinates: [55.926948, 37.675029],
+  iconContent: 3,
+  preset: 'islands#greenStretchyIcon',
+  balloonContentHeader: "ЗОНА 3",
+  balloonContentBody: "Минимальная сумма заказа 2000р.",
+  balloonContentFooter: "Стоимость доставки: заказ до 4000р - 500р. заказ от 4000р доставка БЕСПЛАТНО!"
+}];
 ymaps.ready(init);
 function init() {
   var center = [55.884216, 37.689635];
   var myMap = new ymaps.Map('map-delivery', {
       center: center,
       zoom: 10,
-      //controls: ['geolocationControl', 'searchControl']
       controls: ['searchControl']
       //controls: [],
     }),
@@ -59,7 +80,7 @@ function init() {
   });
   myMap.geoObjects.add(deliveryPoint);
 
-  // Добавление поиска по яндекс карте к строке поиска #suggest (город, улица, дом)
+  // Добавление подсказок к строке поиска #suggest (город, улица, дом)
   var deliveryForm = document.getElementById("delivery");
   deliveryForm.addEventListener("submit", function (evt) {
     return evt.preventDefault();
@@ -67,48 +88,44 @@ function init() {
   var suggestView = new ymaps.SuggestView('suggest');
 
   // ----------!
-  // Добавление меток для всех ЗОН
-  var marks = [{
-    coordinates: [55.890130, 37.688847],
-    iconContent: "ЗОНА 1",
-    preset: 'islands#redStretchyIcon'
-  }, {
-    coordinates: [55.872136, 37.635663],
-    iconContent: "ЗОНА 2",
-    preset: 'islands#blueStretchyIcon'
-  }, {
-    coordinates: [55.926948, 37.675029],
-    iconContent: "ЗОНА 3",
-    preset: 'islands#greenStretchyIcon'
-  }];
+
   marks.forEach(function (mark) {
-    var myGeoObject = new ymaps.GeoObject({
-      // Описание геометрии.
-      geometry: {
-        type: "Point",
-        coordinates: mark.coordinates
-      },
-      // Свойства.
-      properties: {
-        // Контент метки.
-        iconContent: mark.iconContent
-        //hintContent: 'Ну давай уже тащи'
-      }
+    var myPlacemark = new ymaps.Placemark(mark.coordinates, {
+      iconContent: mark.iconContent,
+      balloonContentHeader: mark.balloonContentHeader,
+      balloonContentBody: mark.balloonContentBody,
+      balloonContentFooter: mark.balloonContentFooter
     }, {
-      // Опции.
-      // Иконка метки будет растягиваться под размер ее содержимого.
       preset: mark.preset
     });
-    myMap.geoObjects.add(myGeoObject);
+    myMap.geoObjects.add(myPlacemark);
   });
-  // ----------!
 
-  //----
-  //   const placemarkAddress = new ymaps.Placemark(center, {}, {
-  //   iconLayout: 'default#image',
-  // });
-  // myMap.geoObjects.add(placemarkAddress);
-  //----
+  // Получение результата адреса из строки поиска
+  suggestView.events.add('select', function (evt) {
+    var searchRequest = evt.get('item').value;
+    var myGeocoder = ymaps.geocode(
+    // Строка с адресом, который нужно геокодировать
+    searchRequest, {
+      /* Опции поиска:
+         - область поиска */
+      boundedBy: myMap.getBounds(),
+      // - искать только в этой области
+      strictBounds: true,
+      // - требуемое количество результатов
+      results: 1
+    });
+
+    /* После того, как поиск вернул результат, вызывается
+       callback-функция */
+    myGeocoder.then(function (res) {
+      /* Размещение полученной коллекции
+         геообъектов на карте */
+      myMap.geoObjects.add(res.geoObjects);
+    });
+  });
+
+  // ----------!
 
   function onZonesLoad(json) {
     // Добавляем зоны на карту.
