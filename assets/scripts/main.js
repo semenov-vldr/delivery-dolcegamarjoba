@@ -3,31 +3,6 @@
 
 var mapDelivery = document.querySelector('#map-delivery');
 
-//if (mapDelivery) ymaps.ready(initYaMap);
-
-function initYaMap() {
-  var pointAddress = [55.884216, 37.689635];
-  var myMap = new ymaps.Map('map-delivery', {
-    center: pointAddress,
-    zoom: 11,
-    controls: []
-  });
-  var placemarkAddress = new ymaps.Placemark(pointAddress, {}, {
-    iconLayout: 'default#image'
-  });
-  myMap.geoObjects.add(placemarkAddress);
-  function onZonesLoad(json) {
-    console.log(json);
-    var deliveryZones = ymaps.geoQuery(json).addToMap(myMap);
-  }
-  $.ajax({
-    url: './assets/json/data.json',
-    dataType: 'json',
-    success: onZonesLoad
-  });
-}
-;
-
 // ----------------------------------------------------------------------------------------------------------------
 // Добавление меток для всех ЗОН
 var marks = [{
@@ -100,28 +75,20 @@ function init() {
     });
     myMap.geoObjects.add(myPlacemark);
   });
+  var searchPlacemark;
 
   // Получение результата адреса из строки поиска
   suggestView.events.add('select', function (evt) {
     var searchRequest = evt.get('item').value;
-    var myGeocoder = ymaps.geocode(
-    // Строка с адресом, который нужно геокодировать
-    searchRequest, {
-      /* Опции поиска:
-         - область поиска */
-      boundedBy: myMap.getBounds(),
-      // - искать только в этой области
-      strictBounds: true,
-      // - требуемое количество результатов
-      results: 1
-    });
+    myMap.geoObjects.remove(searchPlacemark);
 
-    /* После того, как поиск вернул результат, вызывается
-       callback-функция */
-    myGeocoder.then(function (res) {
-      /* Размещение полученной коллекции
-         геообъектов на карте */
-      myMap.geoObjects.add(res.geoObjects);
+    // Добавление метки из поисковой строки
+    ymaps.geocode(searchRequest).then(function (res) {
+      var searchCoord = res.geoObjects.get(0).geometry.getCoordinates();
+      searchPlacemark = new ymaps.Placemark(searchCoord, null, {
+        preset: 'islands#blueDotIcon'
+      });
+      myMap.geoObjects.add(searchPlacemark);
     });
   });
 
