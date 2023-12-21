@@ -1,31 +1,5 @@
 const mapDelivery = document.querySelector('#map-delivery');
 
-//if (mapDelivery) ymaps.ready(initYaMap);
-
-function initYaMap() {
-  const pointAddress = [55.884216, 37.689635];
-  let myMap = new ymaps.Map('map-delivery', {
-    center: pointAddress,
-    zoom: 11,
-    controls: [],
-  });
-
-  const placemarkAddress = new ymaps.Placemark(pointAddress, {}, {
-    iconLayout: 'default#image',
-  });
-  myMap.geoObjects.add(placemarkAddress);
-
-  function onZonesLoad(json) {
-    console.log(json)
-      let deliveryZones = ymaps.geoQuery(json).addToMap(myMap);
-  }
-  $.ajax({
-    url: './assets/json/data.json',
-    dataType: 'json',
-    success: onZonesLoad
-  });
-};
-
 // ----------------------------------------------------------------------------------------------------------------
 // Добавление меток для всех ЗОН
 const marks = [
@@ -98,36 +72,23 @@ function init() {
   });
 
 
+  let searchPlacemark;
+
   // Получение результата адреса из строки поиска
   suggestView.events.add('select', function (evt) {
     let searchRequest = evt.get('item').value;
 
-    let myGeocoder = ymaps.geocode(
-      // Строка с адресом, который нужно геокодировать
-      searchRequest, {
-        /* Опции поиска:
-           - область поиска */
-        boundedBy: myMap.getBounds(),
-        // - искать только в этой области
-        strictBounds: true,
-        // - требуемое количество результатов
-        results: 1
-      }
-    );
+    myMap.geoObjects.remove(searchPlacemark);
 
-    /* После того, как поиск вернул результат, вызывается
-       callback-функция */
-    myGeocoder.then(
-      function (res) {
-        /* Размещение полученной коллекции
-           геообъектов на карте */
-          myMap.geoObjects.add(res.geoObjects);
-      }
-    );
+    // Добавление метки из поисковой строки
+    ymaps.geocode(searchRequest).then(function (res) {
+      let searchCoord = res.geoObjects.get(0).geometry.getCoordinates();
+      searchPlacemark = new ymaps.Placemark(searchCoord, null, {
+        preset: 'islands#blueDotIcon'
+      });
+      myMap.geoObjects.add(searchPlacemark);
+    });
   });
-
-
-
 
   // ----------!
 
@@ -187,7 +148,7 @@ function init() {
           // Если вы не хотите, чтобы при каждом перемещении метки отправлялся запрос к геокодеру,
           // закомментируйте код ниже.
           ymaps.geocode(coords, {results: 1}).then(function (res) {
-            var obj = res.geoObjects.get(0);
+            let obj = res.geoObjects.get(0);
             setData(obj);
           });
         }
