@@ -1,11 +1,25 @@
 "use strict";
 "use strict";
 
+function mobileFooterNav() {
+  var footer = document.querySelector("footer.footer");
+  if (!footer) return;
+  var footerNavs = footer.querySelectorAll(".footer-nav");
+  footerNavs.forEach(function (footerNav) {
+    var footerTitle = footerNav.querySelector(".footer__title");
+    footerTitle.addEventListener("click", function () {
+      footerTitle.classList.toggle("js-mobile-nav-open");
+    });
+  });
+}
+mobileFooterNav();
+"use strict";
+
 var mapDelivery = document.querySelector('#map-delivery');
 
 // ----------------------------------------------------------------------------------------------------------------
 // Добавление меток для всех ЗОН
-var marks = [{
+var zoneMarks = [{
   coordinates: [55.890130, 37.688847],
   iconContent: 1,
   preset: 'islands#redStretchyIcon',
@@ -64,7 +78,8 @@ function init() {
 
   // ----------!
 
-  marks.forEach(function (mark) {
+  // Создание и добавление меток для зон
+  zoneMarks.forEach(function (mark) {
     var myPlacemark = new ymaps.Placemark(mark.coordinates, {
       iconContent: mark.iconContent,
       balloonContentHeader: mark.balloonContentHeader,
@@ -76,7 +91,6 @@ function init() {
     myMap.geoObjects.add(myPlacemark);
   });
   var searchPlacemark;
-
   // Получение результата адреса из строки поиска
   suggestView.events.add('select', function (evt) {
     var searchRequest = evt.get('item').value;
@@ -190,23 +204,9 @@ function init() {
   }
   ;
   $.ajax({
-    url: './assets/json/data.json',
+    url: './assets/json/zones.json',
     dataType: 'json',
     success: onZonesLoad
   });
 }
-"use strict";
-
-function mobileFooterNav() {
-  var footer = document.querySelector("footer.footer");
-  if (!footer) return;
-  var footerNavs = footer.querySelectorAll(".footer-nav");
-  footerNavs.forEach(function (footerNav) {
-    var footerTitle = footerNav.querySelector(".footer__title");
-    footerTitle.addEventListener("click", function () {
-      footerTitle.classList.toggle("js-mobile-nav-open");
-    });
-  });
-}
-mobileFooterNav();
 "use strict";
