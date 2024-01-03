@@ -2,7 +2,7 @@ const mapDelivery = document.querySelector('#map-delivery');
 
 // ----------------------------------------------------------------------------------------------------------------
 // Добавление меток для всех ЗОН
-const marks = [
+const zoneMarks = [
   {
     coordinates: [55.890130, 37.688847],
     iconContent: 1,
@@ -59,7 +59,8 @@ function init() {
 
   // ----------!
 
-  marks.forEach(mark => {
+  // Создание и добавление меток для зон
+  zoneMarks.forEach(mark => {
     let myPlacemark = new ymaps.Placemark(mark.coordinates, {
       iconContent: mark.iconContent,
       balloonContentHeader: mark.balloonContentHeader,
@@ -73,7 +74,6 @@ function init() {
 
 
   let searchPlacemark;
-
   // Получение результата адреса из строки поиска
   suggestView.events.add('select', function (evt) {
     let searchRequest = evt.get('item').value;
@@ -184,7 +184,7 @@ function init() {
   };
 
   $.ajax({
-    url: './assets/json/data.json',
+    url: './assets/json/zones.json',
     dataType: 'json',
     success: onZonesLoad,
   });

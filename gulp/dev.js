@@ -91,7 +91,7 @@ gulp.task("images:dev", function () {
     .pipe(gulp.dest("./build/assets/img/"))
 });
 
-// fonts
+// Fonts
 gulp.task("fonts:dev", function () {
   return gulp
     .src("./src/fonts/**/*")
@@ -131,7 +131,14 @@ gulp.task('libs:dev', function () {
     .src('./src/libs/**/*.js')
     .pipe(concatJs('libs.min.js'))
     .pipe(gulp.dest('./build/assets/scripts/'))
-})
+});
+
+// JSON
+gulp.task('json:dev', function () {
+  return gulp
+    .src('./src/json/*.json')
+    .pipe(gulp.dest('./build/assets/json/'))
+});
 
 // Browser-Sync
 gulp.task("browser-sync:dev", function () {
@@ -143,7 +150,7 @@ gulp.task("browser-sync:dev", function () {
 });
 
 
-// watcher
+// Watcher
 gulp.task("watch:dev", function () {
   gulp.watch(['./src/sass/**/*.sass', './src/blocks/**/*.sass'], gulp.parallel('sass:dev'));
   gulp.watch('./src/**/*.pug', gulp.parallel('pug:dev'));

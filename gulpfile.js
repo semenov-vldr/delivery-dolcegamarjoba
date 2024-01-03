@@ -17,7 +17,7 @@ require('./gulp/dev.js');
 
 gulp.task('build', gulp.series(
   'clean:dev',
-  gulp.parallel('pug:dev', 'sass:dev', 'images:dev', 'fonts:dev', 'files:dev', 'libs:dev', 'scripts:dev'),
+  gulp.parallel('pug:dev', 'sass:dev', 'images:dev', 'fonts:dev', 'files:dev', 'libs:dev', 'scripts:dev', 'json:dev'),
 ));
 
 gulp.task("default",
